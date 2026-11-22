@@ -14,7 +14,18 @@ const _all=[..._res,...EXTRA];
 /* interleave the categories so the grid reads as a varied mix of real work */
 const _cats=['Google Ads','Meta Ads','Success stories','Ad creatives','Social posts','Social plans','Reels','Client work'];
 const _by=_cats.map(c=>_all.filter(x=>x.c===c));
-const work=[];for(let k=0;_by.some(a=>k<a.length);k++)_by.forEach(a=>{if(k<a.length)work.push(a[k])});
+const workAll=[];for(let k=0;_by.some(a=>k<a.length);k++)_by.forEach(a=>{if(k<a.length)workAll.push(a[k])});
+/* portfolio page: client work only (pictures and videos from the clients' own folders), same six tabs */
+const _onPf=document.body.classList.contains('page-portfolio');
+const REELS_PF=[{"f": "video/c01.webp", "v": "video/c01.mp4", "t": "Family Umrah package", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c02.webp", "v": "video/c02.mp4", "t": "July family Umrah", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c03.webp", "v": "video/c03.mp4", "t": "October Umrah", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c04.webp", "v": "video/c04.mp4", "t": "Premium Umrah", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c05.webp", "v": "video/c05.mp4", "t": "Summer holiday offer", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c06.webp", "v": "video/c06.mp4", "t": "Family package reel", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c07.webp", "v": "video/c07.mp4", "t": "Premium package reel", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c08.webp", "v": "video/c08.mp4", "t": "Umrah promo", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c09.webp", "v": "video/c09.mp4", "t": "Build It All reel 1", "s": "Build IT All", "c": "Reels"}, {"f": "video/c10.webp", "v": "video/c10.mp4", "t": "Build It All reel 2", "s": "Build IT All", "c": "Reels"}, {"f": "video/c11.webp", "v": "video/c11.mp4", "t": "Build It All reel 3", "s": "Build IT All", "c": "Reels"}, {"f": "video/c12.webp", "v": "video/c12.mp4", "t": "Build It All reel 4", "s": "Build IT All", "c": "Reels"}, {"f": "video/c13.webp", "v": "video/c13.mp4", "t": "Case Bazar promo", "s": "Case Bazar", "c": "Reels"}, {"f": "video/c14.webp", "v": "video/c14.mp4", "t": "Case Bazar reel 1", "s": "Case Bazar", "c": "Reels"}, {"f": "video/c15.webp", "v": "video/c15.mp4", "t": "Case Bazar reel 2", "s": "Case Bazar", "c": "Reels"}, {"f": "video/c16.webp", "v": "video/c16.mp4", "t": "Case Bazar reel 3", "s": "Case Bazar", "c": "Reels"}];
+let work=workAll;
+if(_onPf){
+  const cl=workAll.filter(w=>w.c==='Client work');
+  const isAd=w=>['Safar Al Noor Travel','Faizan Book Store','Get Me Tutor','Silent Night Beds','Empower Edge'].includes(w.s)||/signature-spa-0[1-4]/.test(w.f);
+  const tag=(w,c)=>({...w,c:c,s:w.s});
+  const groups=[workAll.filter(w=>w.c==='Google Ads'),workAll.filter(w=>w.c==='Meta Ads'),cl.filter(isAd).map(w=>tag(w,'Ad creatives')),cl.filter(w=>!isAd(w)).map(w=>tag(w,'Social posts')),[0,8,12,1,9,13,2,10,14,3,11,15,4,5,6,7].map(i=>REELS_PF[i])];
+  work=[];for(let k=0;groups.some(a=>k<a.length);k++)groups.forEach(a=>{if(k<a.length)work.push(a[k])});
+}
 const services=[
  ['Google Ads Management','Reach customers actively searching for what you sell.',['Search campaigns','Performance Max','Conversion tracking','Monthly reporting']],
  ['Meta Ads Management','Leads, sales and awareness on Facebook and Instagram.',['Lead generation','Retargeting','Creative testing','Audience building']],
@@ -38,7 +49,7 @@ const PLAY='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><pat
   const a=document.createElement('a');
   a.className='tile'+(w.v?' vt':''); a.href=hasLb?'#':'portfolio.html'; a.dataset.cat=w.c; a.dataset.i=i;
   a.setAttribute('aria-label',`${w.c}: ${w.t}${w.s?', '+w.s:''}. ${hasLb?'Open larger':'View portfolio'}`);
-  const _k={'Google Ads':'g','Meta Ads':'m','Success stories':'s','Ad creatives':'c','Social posts':'p','Social plans':'l','Reels':'r','Client work':'w'}[w.c]||'g';
+  const _k={'Google Ads':'g','Meta Ads':'m','Success stories':'s','Ad creatives':'c','Social posts':'p','Social plans':'l','Reels':'r','Client work':'w'}[w.c]||['g','m','s','c','p','l','r'][[...w.c].reduce((a,ch)=>a+ch.charCodeAt(0),0)%7];
   const _M={g:'<circle cx="46" cy="46" r="26" fill="none" stroke="currentColor" stroke-width="8"/><path d="M66 66l28 28" stroke="currentColor" stroke-width="10" stroke-linecap="round"/><path d="M24 110v-22M40 110V76M56 110V60" stroke="currentColor" stroke-width="9" stroke-linecap="round"/>',m:'<circle cx="38" cy="60" r="26" fill="none" stroke="currentColor" stroke-width="9"/><circle cx="82" cy="60" r="26" fill="none" stroke="currentColor" stroke-width="9"/>',s:'<path d="M60 8l13 30 32 3-24 22 8 32-29-17-29 17 8-32-24-22 32-3z" fill="currentColor"/>',c:'<rect x="8" y="22" width="64" height="64" rx="12" fill="none" stroke="currentColor" stroke-width="8"/><rect x="40" y="46" width="64" height="64" rx="12" fill="currentColor" opacity=".55"/>',p:'<path d="M60 100S14 72 14 42a24 24 0 0 1 46-10 24 24 0 0 1 46 10c0 30-46 58-46 58z" fill="currentColor"/>',l:'<rect x="10" y="20" width="100" height="84" rx="12" fill="none" stroke="currentColor" stroke-width="8"/><path d="M10 46h100M38 8v22M82 8v22" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><circle cx="40" cy="76" r="6" fill="currentColor"/><circle cx="62" cy="76" r="6" fill="currentColor"/><circle cx="84" cy="76" r="6" fill="currentColor"/>',r:'<path d="M34 18v84l72-42z" fill="currentColor"/>'}[_k];
   const _n=String(i+1).padStart(2,'0');
   a.dataset.k=_k;
@@ -139,7 +150,7 @@ setInterval(()=>{
   setTimeout(()=>{wi=(wi+1)%words.length;swap.textContent=words[wi];swap.classList.remove('out')},400);
 },2600);
 const pb=$('#pause');
-pb.addEventListener('click',()=>{
+if(pb)pb.addEventListener('click',()=>{
   paused=!paused; document.documentElement.toggleAttribute('data-paused',paused);
   pb.setAttribute('aria-pressed',paused); pb.textContent=paused?'Play motion':'Pause motion';
 });
@@ -190,7 +201,7 @@ new IntersectionObserver((e,o)=>{if(e[0].isIntersecting){w.classList.add('in');o
 (function(){
   const reelEl=$('#reel'),host=$('#wheel');
   const pick=['work/g02','ss/ss1','ads/a06','posts/c02','work/m20','smm/s02','work/g10','ads/a08','posts/p08','work/g12','ss/ss2','ads/a02'];
-  const files=pick.map(p=>work.find(w=>w.f.startsWith(p)));
+  const files=_onPf?(()=>{const cw=work.filter(w=>!/^work\//.test(w.f));return Array.from({length:12},(_,i)=>cw[Math.floor(i*cw.length/12)])})():pick.map(p=>workAll.find(w=>w.f.startsWith(p)));
   const N=files.length;
   host.innerHTML='<div class="wring" id="wr1"></div><div class="wring" id="wr2"></div>'+
     files.map(w=>`<div class="wc"><img src="assets/${w.f}" alt="" decoding="async"></div>`).join('')+
@@ -413,7 +424,7 @@ if(!reduce){
       b.style.transform=`translate3d(0,${(1-p)*60}px,0) scale(${.92+.08*p})`;
     },.1);
     const pl=b.querySelector('.pl');
-    if(pl)scrub(()=>vis(b,1.1,-.3),p=>{pl.style.transform=`translate3d(0,${(.5-p)*60}px,0) scale(1.08)`},.12);
+    if(pl&&!pl.classList.contains('col'))scrub(()=>vis(b,1.1,-.3),p=>{pl.style.transform=`translate3d(0,${(.5-p)*60}px,0) scale(1.08)`},.12);
   });
 
   /* 6. contact heading rises in */
@@ -448,4 +459,41 @@ if(!reduce){
   const vs=document.querySelectorAll('.vloop');if(!vs.length)return;
   const io=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting&&!reduce&&!paused)v.play().catch(()=>{});else v.pause()}),{threshold:.35});
   vs.forEach(v=>io.observe(v));
+})();
+
+/* ================= book-call form (services) ================= */
+(function(){const f=document.getElementById('bkform');if(!f)return;
+  const b=document.getElementById('bksend'),er=document.getElementById('bkerr'),ok=document.getElementById('bkok');
+  const val=n=>((f.elements[n]||{}).value||'').trim();
+  const go=e=>{e.preventDefault();er.style.display='none';ok.style.display='none';
+    const em=val('email');
+    if(!val('name')||!val('phone')){er.textContent='Please add your name and phone or WhatsApp number so we can reach you.';er.style.display='block';return}
+    if(em&&!/^\S+@\S+\.\S+$/.test(em)){er.textContent='That email address does not look right.';er.style.display='block';return}
+    const picks=[...f.querySelectorAll('.opts label')].filter(l=>l.querySelector('input').checked).map(l=>l.textContent.trim()).join(', ');
+    const t=['Hello Adverex, I would like to book a consultation / quote call.','Name: '+val('name'),'Phone: '+val('phone'),'Email: '+em,'Company: '+val('company'),'Interested in: '+picks,'Preferred time: '+val('time'),'Preferred day: '+val('day'),'About the project: '+val('msg')].filter(x=>!/: $/.test(x)).join('\n');
+    ok.style.display='block';window.open('https://wa.me/923082451415?text='+encodeURIComponent(t),'_blank','noopener')};
+  b.addEventListener('click',go);f.addEventListener('submit',go);
+  f.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName!=='TEXTAREA')go(e)});
+})();
+
+/* why cards spotlight */
+document.querySelectorAll('.wl-cards li').forEach(li=>li.addEventListener('pointermove',e=>{const r=li.getBoundingClientRect();li.style.setProperty('--mx',(e.clientX-r.left)+'px');li.style.setProperty('--my',(e.clientY-r.top)+'px')}));
+
+/* ================= websites list: 4 rows, then "Show more" ================= */
+(function(){const g=document.querySelector('#sites .sites');if(!g)return;
+  const items=[...g.children];let open=false;
+  const wrap=document.createElement('div');wrap.className='more more-lg';
+  wrap.innerHTML='<button type="button">Show more websites <i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12M13 7l5 5-5 5"/></svg></i></button>';
+  g.after(wrap);
+  const btn=wrap.querySelector('button');
+  function fit(){
+    if(open){items.forEach(i=>i.hidden=false);wrap.hidden=true;return}
+    items.forEach(i=>i.hidden=false);
+    const rows=innerWidth<=620?8:4;let tops=[],cut=items.length;
+    for(let k=0;k<items.length;k++){const t=items[k].offsetTop;if(!tops.includes(t))tops.push(t);if(tops.length>rows){cut=k;break}}
+    items.forEach((it,k)=>it.hidden=k>=cut);wrap.hidden=cut>=items.length;
+  }
+  btn.addEventListener('click',()=>{open=true;fit();items.slice(0,0)});
+  addEventListener('resize',()=>{clearTimeout(fit._t);fit._t=setTimeout(fit,120)});
+  fit();addEventListener('load',fit);
 })();

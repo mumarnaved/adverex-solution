@@ -6,7 +6,7 @@ function flip(i,on){cs.forEach((c,k)=>c.classList.toggle('flip',on&&k===i));flip
 function snap(){tgt=Math.round(tgt/STEP)*STEP}
 function go(d){flip(0,false);tgt=Math.round(tgt/STEP)*STEP-d*STEP;idle=0;kick()}
 function render(){const r=R();cs.forEach((c,i)=>{const a=((i*STEP+ang)%360+360)%360,rad=a*Math.PI/180,z=Math.cos(rad),dep=(z+1)/2;
- c.style.transform=`rotateY(${a}deg) translateZ(${r}px)`;c.style.setProperty('--o',(z<0?Math.max(0,.3*(1+z*2)):.25+.75*Math.pow(dep,1.4)).toFixed(3));c.style.zIndex=Math.round(dep*100);c.style.pointerEvents=z>.55?'auto':'none';c.style.setProperty('--s',z>.9?1:.8)});
+ c.style.transform=`rotateY(${a}deg) translateZ(${r}px)${z<0?' rotateY(180deg)':''}`;c.style.setProperty('--o',(z<0?.5+.2*(1+z):.75+.25*Math.pow(dep,1.4)).toFixed(3));c.style.zIndex=Math.round(dep*100);c.style.pointerEvents=z>.55?'auto':'none';c.style.setProperty('--s',z>.9?1:.7)});
  ring.style.transform=`translateZ(${-r}px)`}
 function tick(t){const dt=Math.min(.05,(t-last)/1000||.016);last=t;
  if(!drag){if(!reduce&&!hover&&flipped<0&&vis){idle+=dt;if(idle>3.2){idle=0;tgt-=STEP}}ang+=(tgt-ang)*(1-Math.pow(.0016,dt))}
