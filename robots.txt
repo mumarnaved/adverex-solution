@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://adverexsolution.com/sitemap.xml
