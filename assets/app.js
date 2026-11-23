@@ -19,7 +19,7 @@ const workAll=[];for(let k=0;_by.some(a=>k<a.length);k++)_by.forEach(a=>{if(k<a.
 const _onPf=document.body.classList.contains('page-portfolio');
 const REELS_PF=[{"f": "video/c01.webp", "v": "video/c01.mp4", "t": "Family Umrah package", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c02.webp", "v": "video/c02.mp4", "t": "July family Umrah", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c03.webp", "v": "video/c03.mp4", "t": "October Umrah", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c04.webp", "v": "video/c04.mp4", "t": "Premium Umrah", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c05.webp", "v": "video/c05.mp4", "t": "Summer holiday offer", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c06.webp", "v": "video/c06.mp4", "t": "Family package reel", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c07.webp", "v": "video/c07.mp4", "t": "Premium package reel", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c08.webp", "v": "video/c08.mp4", "t": "Umrah promo", "s": "Safar Al Noor Travel", "c": "Reels"}, {"f": "video/c09.webp", "v": "video/c09.mp4", "t": "Build It All reel 1", "s": "Build IT All", "c": "Reels"}, {"f": "video/c10.webp", "v": "video/c10.mp4", "t": "Build It All reel 2", "s": "Build IT All", "c": "Reels"}, {"f": "video/c11.webp", "v": "video/c11.mp4", "t": "Build It All reel 3", "s": "Build IT All", "c": "Reels"}, {"f": "video/c12.webp", "v": "video/c12.mp4", "t": "Build It All reel 4", "s": "Build IT All", "c": "Reels"}, {"f": "video/c13.webp", "v": "video/c13.mp4", "t": "Case Bazar promo", "s": "Case Bazar", "c": "Reels"}, {"f": "video/c14.webp", "v": "video/c14.mp4", "t": "Case Bazar reel 1", "s": "Case Bazar", "c": "Reels"}, {"f": "video/c15.webp", "v": "video/c15.mp4", "t": "Case Bazar reel 2", "s": "Case Bazar", "c": "Reels"}, {"f": "video/c16.webp", "v": "video/c16.mp4", "t": "Case Bazar reel 3", "s": "Case Bazar", "c": "Reels"}];
 let work=workAll;
-if(_onPf){
+if(true){
   const cl=workAll.filter(w=>w.c==='Client work');
   const isAd=w=>['Safar Al Noor Travel','Faizan Book Store','Get Me Tutor','Silent Night Beds','Empower Edge'].includes(w.s)||/signature-spa-0[1-4]/.test(w.f);
   const tag=(w,c)=>({...w,c:c,s:w.s});
@@ -201,7 +201,7 @@ new IntersectionObserver((e,o)=>{if(e[0].isIntersecting){w.classList.add('in');o
 (function(){
   const reelEl=$('#reel'),host=$('#wheel');
   const pick=['work/g02','ss/ss1','ads/a06','posts/c02','work/m20','smm/s02','work/g10','ads/a08','posts/p08','work/g12','ss/ss2','ads/a02'];
-  const files=_onPf?(()=>{const cw=work.filter(w=>!/^work\//.test(w.f));return Array.from({length:12},(_,i)=>cw[Math.floor(i*cw.length/12)])})():pick.map(p=>workAll.find(w=>w.f.startsWith(p)));
+  const files=true?(()=>{const cw=work.filter(w=>!/^work\//.test(w.f));return Array.from({length:12},(_,i)=>cw[Math.floor(i*cw.length/12)])})():pick.map(p=>workAll.find(w=>w.f.startsWith(p)));
   const N=files.length;
   host.innerHTML='<div class="wring" id="wr1"></div><div class="wring" id="wr2"></div>'+
     files.map(w=>`<div class="wc"><img src="assets/${w.f}" alt="" decoding="async"></div>`).join('')+
@@ -440,9 +440,19 @@ if(!reduce){
 
 /* ================= mobile menu + reveal-on-scroll (multi-page additions) ================= */
 (function(){
-  const b=$('#mbtn'),n=$('#nav'),h=document.documentElement;
-  function close(){n.classList.remove('open');b.setAttribute('aria-expanded','false');b.textContent='Menu';h.classList.remove('lock')}
-  b.addEventListener('click',()=>{const o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);b.textContent=o?'Close':'Menu';h.classList.toggle('lock',o)});
+  const b=$('#mbtn'),n=$('#nav'),h=document.documentElement;if(!b||!n)return;
+  const esc=t=>String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  b.innerHTML='<i></i><i></i>';b.setAttribute('aria-label','Open menu');
+  const dd=n.querySelector('.dd');
+  if(dd){const sub=document.createElement('div');sub.className='mm-sub';
+    sub.innerHTML=[...dd.querySelectorAll('.mega li a')].map(a=>{const t=a.querySelector('b'),e=a.querySelector('em');return '<a href="'+a.getAttribute('href')+'"><b>'+esc(t?t.textContent:a.textContent)+'</b><em>'+esc(e?e.textContent:'')+'</em></a>'}).join('');
+    dd.appendChild(sub)}
+  const ft=document.createElement('div');ft.className='mm-foot';
+  ft.innerHTML='<a class="mm-cta" href="contact.html">Start a project <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path d="M4.5 11.5 11.5 4.5M5.5 4.5h6v6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a><div class="mm-row"><a href="tel:+923082451415">Call us</a><a href="https://wa.me/923082451415" target="_blank" rel="noopener">WhatsApp</a></div><p>Phase 2, Johar Town, Lahore</p>';
+  n.appendChild(ft);
+  function set(o){n.classList.toggle('open',o);b.setAttribute('aria-expanded',o);b.setAttribute('aria-label',o?'Close menu':'Open menu');h.classList.toggle('lock',o)}
+  function close(){set(false)}
+  b.addEventListener('click',()=>set(!n.classList.contains('open')));
   n.addEventListener('click',e=>{if(e.target.closest('a'))close()});
   addEventListener('keydown',e=>{if(e.key==='Escape')close()});
   addEventListener('resize',()=>{if(innerWidth>900)close()});
